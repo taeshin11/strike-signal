@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { promises as fs } from "fs";
 import path from "path";
 import ImpactBadge from "@/components/ImpactBadge";
@@ -5,6 +6,12 @@ import TypeIcon from "@/components/TypeIcon";
 import AdInContent from "@/components/ads/AdInContent";
 import AdSidebar from "@/components/ads/AdSidebar";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: 'Strike Signal | Real-Time Conflict Intelligence',
+  description: 'Real-time monitoring of military strikes, airstrikes, and kinetic military operations in active conflict zones',
+  keywords: 'military strikes, airstrike monitor, kinetic operations, missile strikes, military action, bombing',
+}
 
 type Incident = {
   id: string; date: string; time_utc: string; conflict: string;

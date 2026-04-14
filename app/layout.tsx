@@ -9,8 +9,29 @@ import Link from "next/link";
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Strike Signal — Missile & Drone Strike Dashboard 2026",
-  description: "Real-time missile, drone, and airstrike incident tracker for Ukraine, Gaza, Houthi attacks, and Iran.",
+  title: {
+    default: 'Strike Signal | Real-Time Intelligence',
+    template: '%s | Strike Signal'
+  },
+  description: 'Real-time monitoring of military strikes, airstrikes, and kinetic military operations in active conflict zones',
+  keywords: 'military strikes, airstrike monitor, kinetic operations, missile strikes, military action, bombing',
+  openGraph: {
+    type: 'website',
+    siteName: 'Strike Signal',
+    title: 'Strike Signal | Real-Time Intelligence',
+    description: 'Real-time monitoring of military strikes, airstrikes, and kinetic military operations in active conflict zones',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Strike Signal',
+    description: 'Real-time monitoring of military strikes, airstrikes, and kinetic military operations in active conflict zones',
+  },
+  verification: {
+    google: 'add-your-google-site-verification-here',
+  },
+  other: {
+    'google-adsense-account': 'ca-pub-add-your-publisher-id-here',
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -36,13 +57,21 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </header>
         <main className="flex-1">{children}</main>
         <footer className="bg-zinc-950 text-zinc-500 border-t border-zinc-800 mt-auto">
-          <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <span className="text-zinc-300 font-semibold">Strike Signal</span>
-              <span className="text-zinc-700">·</span>
-              <span className="text-xs">Data from ISW, IDF, CENTCOM, UKMTO. No graphic imagery.</span>
+          <div className="max-w-7xl mx-auto px-4 py-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm border-t border-zinc-700 pt-6 mb-4 mt-4">
+              <a href="/about" className="hover:text-zinc-100 transition-colors">About Us</a>
+              <a href="/faq" className="hover:text-zinc-100 transition-colors">How to Use &amp; FAQ</a>
+              <a href="/privacy" className="hover:text-zinc-100 transition-colors">Privacy Policy</a>
+              <a href="/terms" className="hover:text-zinc-100 transition-colors">Terms of Service</a>
             </div>
-            <VisitorCounter />
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-zinc-300 font-semibold">Strike Signal</span>
+                <span className="text-zinc-700">·</span>
+                <span className="text-xs">Data from ISW, IDF, CENTCOM, UKMTO. No graphic imagery.</span>
+              </div>
+              <VisitorCounter />
+            </div>
           </div>
         </footer>
         <AdMobileSticky />
