@@ -5,6 +5,8 @@ import Link from "next/link";
 import TypeIcon from "@/components/TypeIcon";
 import ImpactBadge from "@/components/ImpactBadge";
 import type { Metadata } from "next";
+import { setRequestLocale } from 'next-intl/server'
+import { routing } from '@/i18n/routing'
 
 type Incident = {
   id: string; date: string; time_utc: string; conflict: string;
@@ -21,11 +23,11 @@ async function getIncidents(): Promise<Incident[]> {
 
 export async function generateStaticParams() {
   const incidents = await getIncidents();
-  return incidents.map((i) => ({ id: i.id }));
+  return routing.locales.flatMap(locale => incidents.map((i) => ({ locale, id: i.id })));
 }
 
-export async function generateMetadata(props: PageProps<"/incident/[id]">): Promise<Metadata> {
-  const { id } = await props.params;
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; id: string }> }): Promise<Metadata> {
+  const { id } = await params;
   const incidents = await getIncidents();
   const incident = incidents.find((i) => i.id === id);
   if (!incident) return {};
@@ -35,15 +37,17 @@ export async function generateMetadata(props: PageProps<"/incident/[id]">): Prom
   };
 }
 
-export default async function IncidentPage(props: PageProps<"/incident/[id]">) {
-  const { id } = await props.params;
+export default async function IncidentPage({ params }: { params: Promise<{ locale: string; id: string }> }) {
+  const { locale, id } = await params;
+  setRequestLocale(locale)
+
   const incidents = await getIncidents();
   const incident = incidents.find((i) => i.id === id);
   if (!incident) notFound();
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <Link href="/" className="text-sm text-red-400 hover:text-red-300 font-mono mb-6 inline-flex items-center gap-1">← All Incidents</Link>
+      <Link href={`/${locale}`} className="text-sm text-red-400 hover:text-red-300 font-mono mb-6 inline-flex items-center gap-1">← All Incidents</Link>
 
       <div className="bg-zinc-800 border border-zinc-700 rounded-2xl p-6">
         <div className="flex items-center gap-3 mb-4">
@@ -84,7 +88,7 @@ export default async function IncidentPage(props: PageProps<"/incident/[id]">) {
 
         <div className="text-sm text-zinc-400 mb-4">
           <span className="text-zinc-500">Conflict: </span>
-          <Link href={`/conflict/${incident.conflict}`} className="text-red-400 hover:text-red-300 capitalize">
+          <Link href={`/${locale}/conflict/${incident.conflict}`} className="text-red-400 hover:text-red-300 capitalize">
             {incident.conflict.replace(/-/g, " ")}
           </Link>
         </div>

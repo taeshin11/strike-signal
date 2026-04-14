@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { setRequestLocale } from 'next-intl/server'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -7,7 +8,10 @@ export const metadata: Metadata = {
   keywords: 'privacy policy, data protection, cookies, GDPR',
 }
 
-export default function PrivacyPage() {
+export default async function PrivacyPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   const sections = [
     { title: '1. Introduction', content: 'Strike Signal operates the website at strike-signal.vercel.app. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website.' },
     { title: '2. Information We Collect', content: 'We automatically collect browser type, OS, referring URLs, device info, and pages visited via server logs and analytics. We do not require registration and do not intentionally collect personally identifiable information.' },
@@ -24,7 +28,7 @@ export default function PrivacyPage() {
     <main className="bg-zinc-900 text-zinc-100 min-h-screen">
       <div className="max-w-4xl mx-auto px-4 py-12">
         <nav className="text-sm text-zinc-500 mb-8">
-          <Link href="/" className="hover:text-zinc-300">Home</Link>
+          <Link href={`/${locale}`} className="hover:text-zinc-300">Home</Link>
           <span className="mx-2">/</span>
           <span>Privacy Policy</span>
         </nav>

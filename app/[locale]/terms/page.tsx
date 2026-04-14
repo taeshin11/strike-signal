@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { setRequestLocale } from 'next-intl/server'
 
 export const metadata: Metadata = {
   title: 'Terms of Service',
@@ -7,7 +8,10 @@ export const metadata: Metadata = {
   keywords: 'terms of service, terms of use, user agreement',
 }
 
-export default function TermsPage() {
+export default async function TermsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   const sections = [
     { title: '1. Acceptance of Terms', content: 'By accessing Strike Signal at strike-signal.vercel.app, you agree to these Terms. If you disagree, please discontinue use. We may modify terms; continued use constitutes acceptance.' },
     { title: '2. Description of Service', content: 'Strike Signal is a free, publicly accessible platform that provides real-time monitoring of military strikes, airstrikes, and kinetic military operations in active conflict zones. Provided for informational and educational purposes only.' },
@@ -24,7 +28,7 @@ export default function TermsPage() {
     <main className="bg-zinc-900 text-zinc-100 min-h-screen">
       <div className="max-w-4xl mx-auto px-4 py-12">
         <nav className="text-sm text-zinc-500 mb-8">
-          <Link href="/" className="hover:text-zinc-300">Home</Link>
+          <Link href={`/${locale}`} className="hover:text-zinc-300">Home</Link>
           <span className="mx-2">/</span>
           <span>Terms of Service</span>
         </nav>

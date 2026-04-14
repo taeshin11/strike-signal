@@ -6,6 +6,7 @@ import TypeIcon from "@/components/TypeIcon";
 import AdInContent from "@/components/ads/AdInContent";
 import AdSidebar from "@/components/ads/AdSidebar";
 import Link from "next/link";
+import { setRequestLocale } from 'next-intl/server'
 
 export const metadata: Metadata = {
   title: 'Strike Signal | Real-Time Conflict Intelligence',
@@ -27,7 +28,10 @@ async function getIncidents(): Promise<Incident[]> {
   return JSON.parse(raw).incidents;
 }
 
-export default async function Home() {
+export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   const incidents = await getIncidents();
   const sorted = [...incidents].sort((a, b) => b.date.localeCompare(a.date) || b.time_utc.localeCompare(a.time_utc));
   const today = new Date("2026-04-14").toISOString().slice(0, 10);
@@ -140,7 +144,7 @@ export default async function Home() {
                           {incident.description.slice(0, 80)}...
                         </td>
                         <td className="px-4 py-3.5">
-                          <Link href={`/incident/${incident.id}`} className="text-xs text-red-400 hover:text-red-300 font-mono whitespace-nowrap">
+                          <Link href={`/${locale}/incident/${incident.id}`} className="text-xs text-red-400 hover:text-red-300 font-mono whitespace-nowrap">
                             Details →
                           </Link>
                         </td>
@@ -159,7 +163,7 @@ export default async function Home() {
               {conflictSlugs.map((slug) => {
                 const count = incidents.filter((i) => i.conflict === slug).length;
                 return (
-                  <Link key={slug} href={`/conflict/${slug}`}
+                  <Link key={slug} href={`/${locale}/conflict/${slug}`}
                     className="flex items-center justify-between py-2 text-sm hover:text-red-400 transition-colors border-b border-zinc-700/50 last:border-0">
                     <span className="text-zinc-300 capitalize">{slug.replace(/-/g, " ")}</span>
                     <span className="text-zinc-500 text-xs font-mono bg-zinc-900/50 px-2 py-0.5 rounded-full">{count}</span>

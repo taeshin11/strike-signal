@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { setRequestLocale } from 'next-intl/server'
 
 export const metadata: Metadata = {
   title: 'About Us',
@@ -7,12 +8,15 @@ export const metadata: Metadata = {
   keywords: 'military strikes, airstrike monitor, kinetic operations, missile strikes, military action, bombing, about us, conflict intelligence',
 }
 
-export default function AboutPage() {
+export default async function AboutPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
+  setRequestLocale(locale)
+
   return (
     <main className="bg-zinc-900 text-zinc-100 min-h-screen">
       <div className="max-w-4xl mx-auto px-4 py-12">
         <nav className="text-sm text-zinc-500 mb-8">
-          <Link href="/" className="hover:text-zinc-300">Home</Link>
+          <Link href={`/${locale}`} className="hover:text-zinc-300">Home</Link>
           <span className="mx-2">/</span>
           <span>About Us</span>
         </nav>

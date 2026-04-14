@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import IncidentRow from "@/components/IncidentRow";
 import type { Metadata } from "next";
+import { setRequestLocale } from 'next-intl/server'
+import { routing } from '@/i18n/routing'
 
 type Incident = {
   id: string; date: string; time_utc: string; conflict: string;
@@ -21,26 +23,28 @@ async function getIncidents(): Promise<Incident[]> {
 export async function generateStaticParams() {
   const incidents = await getIncidents();
   const conflicts = [...new Set(incidents.map((i) => i.conflict))];
-  return conflicts.map((slug) => ({ slug }));
+  return routing.locales.flatMap(locale => conflicts.map(slug => ({ locale, slug })));
 }
 
-export async function generateMetadata(props: PageProps<"/conflict/[slug]">): Promise<Metadata> {
-  const { slug } = await props.params;
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
   return {
     title: `${slug.replace(/-/g, " ")} Strikes — Strike Signal`,
     description: `All missile, drone, and airstrike incidents for the ${slug.replace(/-/g, " ")} conflict.`,
   };
 }
 
-export default async function ConflictPage(props: PageProps<"/conflict/[slug]">) {
-  const { slug } = await props.params;
+export default async function ConflictPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale, slug } = await params;
+  setRequestLocale(locale)
+
   const incidents = await getIncidents();
   const filtered = incidents.filter((i) => i.conflict === slug).sort((a, b) => b.date.localeCompare(a.date));
   if (filtered.length === 0) notFound();
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <Link href="/" className="text-sm text-red-400 hover:text-red-300 font-mono mb-6 inline-flex items-center gap-1">← All Incidents</Link>
+      <Link href={`/${locale}`} className="text-sm text-red-400 hover:text-red-300 font-mono mb-6 inline-flex items-center gap-1">← All Incidents</Link>
       <h1 className="text-3xl font-bold text-zinc-100 mb-2 capitalize">{slug.replace(/-/g, " ")}</h1>
       <p className="text-zinc-400 mb-6 font-mono text-sm">{filtered.length} incidents recorded</p>
       <div className="bg-zinc-800 border border-zinc-700 rounded-2xl overflow-hidden">
