@@ -20,30 +20,29 @@ type Incident = {
 
 export default function IncidentRow({ incident }: { incident: Incident }) {
   return (
-    <tr className="border-b border-gray-800 hover:bg-gray-900 transition-colors">
-      <td className="py-2.5 pr-3 text-gray-400 whitespace-nowrap text-sm">{incident.date}</td>
-      <td className="py-2.5 pr-3 text-xl"><TypeIcon type={incident.type} /></td>
-      <td className="py-2.5 pr-3 whitespace-nowrap text-sm">
-        <span title={incident.origin_country}>{incident.origin_flag}</span>
-        <span className="text-gray-400 mx-1">→</span>
-        <span title={incident.target_country}>{incident.target_flag}</span>
+    <tr className="border-b border-zinc-700/50 hover:bg-zinc-700/30 transition-colors">
+      <td className="px-4 py-3.5 font-mono text-zinc-400 text-xs whitespace-nowrap">{incident.date}</td>
+      <td className="px-4 py-3.5 text-xl"><TypeIcon type={incident.type} /></td>
+      <td className="px-4 py-3.5 whitespace-nowrap">
+        <span className="text-zinc-300">
+          <span title={incident.origin_country}>{incident.origin_flag}</span>
+          <span className="text-zinc-500 mx-1">→</span>
+          <span title={incident.target_country}>{incident.target_flag}</span>
+        </span>
+        <div className="text-xs text-zinc-500 mt-0.5">{incident.target_city}</div>
       </td>
-      <td className="py-2.5 pr-3 text-gray-300 text-sm">{incident.target_city}</td>
-      <td className="py-2.5 pr-3"><ImpactBadge level={incident.impact_level} /></td>
-      <td className="py-2.5 pr-3 text-xs">
+      <td className="px-4 py-3.5">
+        <ImpactBadge level={incident.impact_level} />
         {incident.intercepted === true && (
-          <span className="bg-green-900 text-green-300 border border-green-700 px-1.5 py-0.5 rounded text-xs">intercepted</span>
+          <span className="ml-1.5 text-xs text-green-400 font-mono">INTERCEPTED</span>
         )}
         {incident.intercepted === "partial" && (
-          <span className="bg-yellow-900 text-yellow-300 border border-yellow-700 px-1.5 py-0.5 rounded text-xs">partial</span>
-        )}
-        {incident.intercepted === false && (
-          <span className="bg-red-900 text-red-300 border border-red-700 px-1.5 py-0.5 rounded text-xs">hit</span>
+          <span className="ml-1.5 text-xs text-yellow-400 font-mono">PARTIAL</span>
         )}
       </td>
-      <td className="py-2.5 text-xs text-gray-400 max-w-[200px] hidden md:table-cell">{incident.description.slice(0, 80)}...</td>
-      <td className="py-2.5 pl-2">
-        <Link href={`/incident/${incident.id}`} className="text-xs text-blue-400 hover:text-blue-300">
+      <td className="px-4 py-3.5 text-xs text-zinc-500 max-w-[200px] hidden md:table-cell">{incident.description.slice(0, 80)}...</td>
+      <td className="px-4 py-3.5">
+        <Link href={`/incident/${incident.id}`} className="text-xs text-red-400 hover:text-red-300 font-mono">
           Details →
         </Link>
       </td>

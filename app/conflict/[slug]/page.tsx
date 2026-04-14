@@ -40,27 +40,34 @@ export default async function ConflictPage(props: PageProps<"/conflict/[slug]">)
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <Link href="/" className="text-sm text-gray-400 hover:text-white mb-6 inline-block">← All Incidents</Link>
-      <h1 className="text-3xl font-bold text-white mb-2 capitalize">{slug.replace(/-/g, " ")}</h1>
-      <p className="text-gray-400 mb-6">{filtered.length} incidents</p>
-      <div className="bg-gray-900 border border-gray-700 rounded-lg p-4 overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="border-b border-gray-700 text-left text-gray-400 text-xs">
-              <th className="pb-2 pr-3">Date</th>
-              <th className="pb-2 pr-3">Type</th>
-              <th className="pb-2 pr-3">Route</th>
-              <th className="pb-2 pr-3">City</th>
-              <th className="pb-2 pr-3">Impact</th>
-              <th className="pb-2 pr-3">Status</th>
-              <th className="pb-2 pr-3 hidden md:table-cell">Description</th>
-              <th className="pb-2"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((i) => <IncidentRow key={i.id} incident={i} />)}
-          </tbody>
-        </table>
+      <Link href="/" className="text-sm text-red-400 hover:text-red-300 font-mono mb-6 inline-flex items-center gap-1">← All Incidents</Link>
+      <h1 className="text-3xl font-bold text-zinc-100 mb-2 capitalize">{slug.replace(/-/g, " ")}</h1>
+      <p className="text-zinc-400 mb-6 font-mono text-sm">{filtered.length} incidents recorded</p>
+      <div className="bg-zinc-800 border border-zinc-700 rounded-2xl overflow-hidden">
+        <div className="px-6 py-4 border-b border-zinc-700 flex items-center justify-between">
+          <h2 className="font-bold text-zinc-100 flex items-center gap-2">
+            <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+            Strike Log
+          </h2>
+          <span className="text-xs text-zinc-500 font-mono">{filtered.length} incidents</span>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead className="bg-zinc-900/50 border-b border-zinc-700">
+              <tr>
+                <th className="text-left px-4 py-3 text-xs font-mono text-zinc-500 uppercase">Date</th>
+                <th className="text-left px-4 py-3 text-xs font-mono text-zinc-500 uppercase">Type</th>
+                <th className="text-left px-4 py-3 text-xs font-mono text-zinc-500 uppercase">Route</th>
+                <th className="text-left px-4 py-3 text-xs font-mono text-zinc-500 uppercase">Impact</th>
+                <th className="text-left px-4 py-3 text-xs font-mono text-zinc-500 uppercase hidden md:table-cell">Notes</th>
+                <th className="px-4 py-3"></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-700/50">
+              {filtered.map((i) => <IncidentRow key={i.id} incident={i} />)}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

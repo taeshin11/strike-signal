@@ -1,14 +1,14 @@
 const IMPACT_STYLES: Record<string, string> = {
-  critical: "bg-red-900 text-red-300 border-red-700",
-  high: "bg-orange-900 text-orange-300 border-orange-700",
-  medium: "bg-yellow-900 text-yellow-300 border-yellow-700",
-  low: "bg-green-900 text-green-300 border-green-700",
+  critical: "bg-red-500/20 text-red-400 border border-red-500/30",
+  high: "bg-orange-500/20 text-orange-400 border border-orange-500/30",
+  medium: "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30",
+  low: "bg-green-500/20 text-green-400 border border-green-500/30",
 };
 
 export default function ImpactBadge({ level }: { level: string }) {
-  const style = IMPACT_STYLES[level] || "bg-gray-800 text-gray-400 border-gray-600";
+  const style = IMPACT_STYLES[level] || "bg-zinc-700 text-zinc-400 border border-zinc-600";
   return (
-    <span className={`text-xs px-2 py-0.5 rounded border font-medium ${style}`}>
+    <span className={`text-xs px-2 py-0.5 rounded font-medium font-mono ${style}`}>
       {level}
     </span>
   );
